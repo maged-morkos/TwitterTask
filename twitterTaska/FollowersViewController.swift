@@ -7,15 +7,68 @@
 //
 
 import UIKit
+import Accounts
+import Social
+import SwifteriOS
+import SafariServices
 
-class FollowersViewController: UIViewController {
+class FollowersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    
+    var swifter: Swifter?
+    var screenName : String?
+    var userID : String?
+    var followersListArray : [JSONValue] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let userDefault : NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        
+        if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
+            if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
+                self.swifter = Swifter(consumerKey: "Eex0sdHRO5ZYB5BxaUTbYhNoH", consumerSecret: "ugtAjpDOvoDWZG51EsyKC6Q4Z0Uyioc182PijiHmPf6WnwEzLn", oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
+                
+                userID = userDefault.objectForKey("userID") as? String
+                screenName = userDefault.objectForKey("screenName") as? String
+                
+                fetchFollowersList()
+            }
+        }
     }
-
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
+    }
+    
+    func fetchFollowersList() {
+        
+        let failureHandler: ((NSError) -> Void) = { error in
+            Global().alertWithTitle("Error", message: error.localizedDescription, viewController: self)
+        }
+        
+        self.swifter?.getFollowersListWithID(userID!,success: { followersList in
+            
+            self.followersListArray = followersList.users!
+            self.tableView.reloadData()
+            }, failure: failureHandler)
+        
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.followersListArray.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: nil)
+        
+        cell.textLabel?.text = self.followersListArray[indexPath.row]["name"].string
+        
+        return cell
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

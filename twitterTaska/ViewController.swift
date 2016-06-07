@@ -27,7 +27,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
             if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
                 self.swifter = Swifter(consumerKey: "Eex0sdHRO5ZYB5BxaUTbYhNoH", consumerSecret: "ugtAjpDOvoDWZG51EsyKC6Q4Z0Uyioc182PijiHmPf6WnwEzLn", oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
-                fetchTwitterHomeStream()
+                
             }
         }
     }
@@ -46,37 +46,24 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         swifter?.authorizeWithCallbackURL(url, presentFromViewController: self, success: { (accessToken, response) in
             accessToken
             
-            
             let userDefult : NSUserDefaults = NSUserDefaults.standardUserDefaults()
             userDefult.setObject(accessToken?.secret, forKey: "accessTokenSecret")
             userDefult.setObject(accessToken?.key, forKey: "accessTokenKey")
+            userDefult.setObject(accessToken?.screenName!, forKey: "screenName")
+            userDefult.setObject(accessToken?.userID!, forKey: "userID")
             userDefult.synchronize()
             
-            }, failure: failureHandler)
-        
-    }
-    
-    
-    func fetchTwitterHomeStream() {
-        let failureHandler: ((NSError) -> Void) = { error in
-            Global().alertWithTitle("Error", message: error.localizedDescription, viewController: self)
-        }
-        
-        self.swifter!.getStatusesHomeTimelineWithCount(20, success: { statuses in
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let followersViewController:FollowersViewController = mainStoryboard.instantiateViewControllerWithIdentifier("FollowersViewController") as! FollowersViewController
             
-            // Successfully fetched timeline, so lets create and push the table view
-//            let tweetsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("TweetsViewController") as! TweetsViewController
-            guard let tweets = statuses else { return }
+            let nav = UINavigationController(rootViewController: followersViewController)
             
-            print(tweets)
-            
-//            tweetsViewController.tweets = tweets
-//            self.navigationController?.pushViewController(tweetsViewController, animated: true)
-            //                self.presentViewController(tweetsViewController, animated: true, completion: nil)
+            self.presentViewController(nav, animated: true, completion: nil)
             
             }, failure: failureHandler)
         
     }
+    
     
     
     @available(iOS 9.0, *)

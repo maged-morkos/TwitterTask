@@ -24,7 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let followersViewController:FollowersViewController = mainStoryboard.instantiateViewControllerWithIdentifier("FollowersViewController") as! FollowersViewController
                 
-                window!.rootViewController = followersViewController
+                let nav = UINavigationController(rootViewController: followersViewController)
+                
+                window!.rootViewController = nav
                 window!.makeKeyAndVisible()
             }
         }
