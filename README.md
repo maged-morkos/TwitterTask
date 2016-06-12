@@ -14,7 +14,7 @@ First run for this app will open the main viewcontroller which contain a twitter
 - everytime the app launch i check for the saved access token if it excist the app will open the followers screan directly and if not the login page will appear
 
 # 2- FollowersViewController
-After signing in a list of followers will appear with the folloing features
+After signing in a list of followers will appear
 
 ## what is used in this class
 - Reach file to get the statues of the network
