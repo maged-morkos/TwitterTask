@@ -8,7 +8,13 @@
 
 import UIKit
 
+
 class Global {
+    
+    struct twitterKeys {
+        static let consumerKey = "Eex0sdHRO5ZYB5BxaUTbYhNoH"
+        static let secretKey = "ugtAjpDOvoDWZG51EsyKC6Q4Z0Uyioc182PijiHmPf6WnwEzLn"
+    }
     
     func alertWithTitle(title: String, message: String, viewController: UIViewController) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)

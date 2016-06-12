@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let userDefault : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
-        if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
-            if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
+        if (userDefault.objectForKey("accessTokenSecret") as? String) != nil {
+            if (userDefault.objectForKey("accessTokenKey") as? String) != nil {
                 let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                 let followersViewController:FollowersViewController = mainStoryboard.instantiateViewControllerWithIdentifier("FollowersViewController") as! FollowersViewController
                 

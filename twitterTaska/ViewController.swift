@@ -13,12 +13,13 @@ import SwifteriOS
 import SafariServices
 
 class ViewController: UIViewController, SFSafariViewControllerDelegate {
-
+    
     var swifter: Swifter?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.swifter = Swifter(consumerKey: "Eex0sdHRO5ZYB5BxaUTbYhNoH", consumerSecret: "ugtAjpDOvoDWZG51EsyKC6Q4Z0Uyioc182PijiHmPf6WnwEzLn")
+        
+        self.swifter = Swifter(consumerKey: Global.twitterKeys.consumerKey, consumerSecret: Global.twitterKeys.secretKey)
         
         
         
@@ -26,7 +27,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         
         if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
             if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
-                self.swifter = Swifter(consumerKey: "Eex0sdHRO5ZYB5BxaUTbYhNoH", consumerSecret: "ugtAjpDOvoDWZG51EsyKC6Q4Z0Uyioc182PijiHmPf6WnwEzLn", oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
+                self.swifter = Swifter(consumerKey: Global.twitterKeys.consumerKey, consumerSecret: Global.twitterKeys.secretKey, oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
                 
             }
         }

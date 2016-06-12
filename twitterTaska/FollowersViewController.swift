@@ -18,23 +18,40 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     
     
     var swifter: Swifter?
+    var userDefault : NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var screenName : String?
     var userID : String?
-    var followersListArray : [JSONValue] = []
-    
+    var followersListArray : [FollowerModel] = []
+    var cellHight : CGFloat = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let userDefault : NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
             if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
-                self.swifter = Swifter(consumerKey: "Eex0sdHRO5ZYB5BxaUTbYhNoH", consumerSecret: "ugtAjpDOvoDWZG51EsyKC6Q4Z0Uyioc182PijiHmPf6WnwEzLn", oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
+                self.swifter = Swifter(consumerKey: Global.twitterKeys.consumerKey, consumerSecret: Global.twitterKeys.secretKey, oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
                 
                 userID = userDefault.objectForKey("userID") as? String
                 screenName = userDefault.objectForKey("screenName") as? String
                 
-                fetchFollowersList()
+                let status = Reach().connectionStatus()
+                
+                
+                switch status {
+                case .Unknown, .Offline:
+                    if  self.userDefault.objectForKey("FollowersList") != nil {
+                        if let data = self.userDefault.objectForKey("FollowersList") as? NSData {
+                            self.followersListArray = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [FollowerModel]
+                            self.tableView.reloadData()
+                        }
+                    }else{
+                        Global().alertWithTitle("No internet", message: "Connect and try again", viewController: self)
+                    }
+                    break
+                case .Online(.WWAN), .Online(.WiFi):
+                    fetchFollowersList()
+                    break
+                }
             }
         }
     }
@@ -51,7 +68,16 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         
         self.swifter?.getFollowersListWithID(userID!,success: { followersList in
             
-            self.followersListArray = followersList.users!
+            let followersArray = followersList.users!
+            
+            for currentUserDic in followersArray {
+                
+                self.followersListArray.append(FollowerModel(followerObject: currentUserDic))
+                
+            }
+            let data = NSKeyedArchiver.archivedDataWithRootObject(self.followersListArray)
+            self.userDefault.setObject(data, forKey: "FollowersList")
+
             self.tableView.reloadData()
             }, failure: failureHandler)
         
@@ -62,27 +88,24 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: nil)
+        let cell: FollowerCell = self.tableView.dequeueReusableCellWithIdentifier("FollowerCell")! as! FollowerCell
+        cell.fullNameLabel.text = self.followersListArray[indexPath.row].fullName
+        cell.screenNameLabel.text = self.followersListArray[indexPath.row].screenName
+        cell.descriptionTextView.text = self.followersListArray[indexPath.row].descriptn
+        cell.descriptionTextView.sizeToFit()
+        cell.profileImageView.downloadImageFrom(link:
+            self.followersListArray[indexPath.row].profileImageURL!, contentMode: UIViewContentMode.ScaleAspectFit)
         
-        cell.textLabel?.text = self.followersListArray[indexPath.row]["name"].string
+        cellHight = cell.descriptionTextView.frame.origin.y + cell.descriptionTextView.frame.size.height
         
         return cell
     }
-    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHight
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
