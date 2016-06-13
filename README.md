@@ -21,7 +21,7 @@ After signing in a list of followers will appear
 - an Extension for UIImageView for lazy loading images in the tableView
 
 ## Logic
-- using Twitter Api and the help of the Swiftter library a list of followers was retrieved
+- using Twitter Api and the help of the Swifter library a list of followers was retrieved
 - I created a model with name "FollowerModel" to store the retrieved data
 - a custome UITableViewCell was created to display the data with a designable way
   - display user photo
@@ -30,4 +30,16 @@ After signing in a list of followers will appear
   - display user description if exist and if not the tableViewCell will change it's hight and fit the content
   
 - everytime the app will check if it is online or offline if it was offline the data will retrieved from the cashed one if exist and if not a message will appear to the user to connect and try again and in case of online statues the app will directly connect to twitter Apis and get the followers list
+
+# 3- FollowerDetailsViewController
+when user choose a follower this view will open with the background image, profile image, user full name and list of tweets
+
+## what is used in this class
+- Reach file to get the statues of the network
+- library called "MBTwitterScroll" to handel the scrolling and the design of the view to be like the Twitter app
+
+## logic
+- Using Twitter Api and the help of the Swifter library a list of tweets for selected follower was retrieved
+- Using the help of "MBTwitterScroll" the background image, profile photo and user full name was displayed with the same design of Twitter app
+- Table view containg a list with user tweets
 
