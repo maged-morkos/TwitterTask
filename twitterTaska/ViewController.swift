@@ -21,16 +21,6 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         
         self.swifter = Swifter(consumerKey: Global.twitterKeys.consumerKey, consumerSecret: Global.twitterKeys.secretKey)
         
-        
-        
-        let userDefault : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
-        if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
-            if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
-                self.swifter = Swifter(consumerKey: Global.twitterKeys.consumerKey, consumerSecret: Global.twitterKeys.secretKey, oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
-                
-            }
-        }
     }
     
     
@@ -46,7 +36,7 @@ class ViewController: UIViewController, SFSafariViewControllerDelegate {
         
         swifter?.authorizeWithCallbackURL(url, presentFromViewController: self, success: { (accessToken, response) in
             accessToken
-            
+            // save the recived token for next run
             let userDefult : NSUserDefaults = NSUserDefaults.standardUserDefaults()
             userDefult.setObject(accessToken?.secret, forKey: "accessTokenSecret")
             userDefult.setObject(accessToken?.key, forKey: "accessTokenKey")

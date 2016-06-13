@@ -19,7 +19,6 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     
     var swifter: Swifter?
     var userDefault : NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    var screenName : String?
     var userID : String?
     var followersListArray : [FollowerModel] = []
     var cellHight : CGFloat = 0
@@ -27,31 +26,37 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         getFollowersList()
     }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
     
     func getFollowersList() {
         
         if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
             if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
+                // init swifter object with saved token
                 self.swifter = Swifter(consumerKey: Global.twitterKeys.consumerKey, consumerSecret: Global.twitterKeys.secretKey, oauthToken: accessTokenKey, oauthTokenSecret: accessTokenSecret)
-                
+                // get saved userID
                 userID = userDefault.objectForKey("userID") as? String
-                screenName = userDefault.objectForKey("screenName") as? String
                 
                 let status = Reach().connectionStatus()
                 
+                // check the connection
                 
                 switch status {
                 case .Unknown, .Offline:
+                    // if there are a saved followers list
                     if  self.userDefault.objectForKey("FollowersList") != nil {
                         if let data = self.userDefault.objectForKey("FollowersList") as? NSData {
                             self.followersListArray = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [FollowerModel]
                             self.tableView.reloadData()
                         }
-                    }else{
+                    }else{ // if there are no saved followers list and there is no internet also
                         Global().alertWithTitle("No internet", message: "Connect and try again", viewController: self)
                     }
                     break
-                case .Online(.WWAN), .Online(.WiFi):
+                case .Online(.WWAN), .Online(.WiFi): // in case of online state
                     fetchFollowersList()
                     break
                 }
@@ -73,7 +78,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         self.swifter?.getFollowersListWithID(userID!,success: { followersList in
             
             let followersArray = followersList.users!
-            print(followersArray)
+            
             for currentUserDic in followersArray {
                 
                 self.followersListArray.append(FollowerModel(followerObject: currentUserDic))
@@ -86,7 +91,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
             }, failure: failureHandler)
         
     }
-    // MARK TableView Delegate and DateSource
+    // MARK: TableView Delegate and DateSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.followersListArray.count
     }
@@ -116,10 +121,6 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         
         followerDetails.currentUser = self.followersListArray[indexPath.row]
         self.navigationController?.pushViewController(followerDetails, animated: true)
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 }

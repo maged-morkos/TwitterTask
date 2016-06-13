@@ -19,6 +19,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="AMM-d9-gpe">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZl-dH-OhQ">
                                 <rect key="frame" x="109" y="269" width="382" height="62"/>
                                 <constraints>
@@ -34,7 +37,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="AMM-d9-gpe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="0s5-Py-H0B"/>
                             <constraint firstItem="tZl-dH-OhQ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BBc-oM-DFz"/>
+                            <constraint firstItem="AMM-d9-gpe" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="J08-tK-ziC"/>
+                            <constraint firstAttribute="trailing" secondItem="AMM-d9-gpe" secondAttribute="trailing" id="N33-us-GCU"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="AMM-d9-gpe" secondAttribute="bottom" id="bmS-VC-8I9"/>
                             <constraint firstItem="tZl-dH-OhQ" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mdA-bp-s9P"/>
                             <constraint firstItem="tZl-dH-OhQ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="191:300" id="v8s-Yw-ICU"/>
                         </constraints>
@@ -122,22 +129,6 @@
                                             <outlet property="screenNameLabel" destination="Hue-Z8-Zhf" id="HhR-lN-b6q"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="cP3-xG-u7E">
-                                        <rect key="frame" x="0.0" y="225" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cP3-xG-u7E" id="wlm-vO-YFd">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="4Mg-zG-6yF">
-                                        <rect key="frame" x="0.0" y="269" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Mg-zG-6yF" id="KTv-fN-if4">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </prototypes>
                                 <sections/>
                                 <connections>
@@ -196,5 +187,6 @@
     </scenes>
     <resources>
         <image name="ButtonTwitterNormal" width="290" height="62"/>
+        <image name="background" width="1920" height="1200"/>
     </resources>
 </document>
