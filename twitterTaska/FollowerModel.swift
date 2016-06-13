@@ -17,6 +17,7 @@ class FollowerModel : NSObject, NSCoding {
     var fullName : String?
     var screenName : String?
     var descriptn : String?
+    var profileBackgroundImageUrl : String?
     
     init(followerObject: JSON){
         
@@ -25,18 +26,20 @@ class FollowerModel : NSObject, NSCoding {
         fullName = followerObject["name"].string
         screenName = followerObject["screen_name"].string
         descriptn = followerObject["description"].string
+        profileBackgroundImageUrl = followerObject["profile_background_image_url"].string
     }
     
     init(userId: String,
          profileImageURL: String,
          fullName: String,
          screenName: String,
-         description: String) {
+         description: String, profileBackgroundImageUrl:String) {
         self.userId = userId
         self.profileImageURL = profileImageURL
         self.fullName = fullName
         self.screenName = screenName
         self.descriptn = description
+        self.profileBackgroundImageUrl = profileBackgroundImageUrl
     }
     
     // MARK: NSCoding
@@ -46,8 +49,9 @@ class FollowerModel : NSObject, NSCoding {
             let profileImageURL = decoder.decodeObjectForKey("profileImageURL") as? String,
             let fullName = decoder.decodeObjectForKey("fullName") as? String,
             let screenName = decoder.decodeObjectForKey("screenName") as? String,
-            let description = decoder.decodeObjectForKey("description") as? String
-        
+            let description = decoder.decodeObjectForKey("description") as? String,
+            let profileBackgroundImageUrl = decoder.decodeObjectForKey("profileBackgroundImageUrl") as? String
+            
             else { return nil }
         
         self.init(
@@ -55,7 +59,7 @@ class FollowerModel : NSObject, NSCoding {
             profileImageURL: profileImageURL,
             fullName: fullName,
             screenName: screenName,
-            description: description
+            description: description, profileBackgroundImageUrl: profileBackgroundImageUrl
         )
     }
     

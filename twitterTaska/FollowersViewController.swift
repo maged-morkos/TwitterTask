@@ -25,7 +25,10 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     var cellHight : CGFloat = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        getFollowersList()
+    }
+    
+    func getFollowersList() {
         
         if let accessTokenSecret = userDefault.objectForKey("accessTokenSecret") as? String {
             if let accessTokenKey = userDefault.objectForKey("accessTokenKey") as? String {
@@ -54,6 +57,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
         }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -69,7 +73,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
         self.swifter?.getFollowersListWithID(userID!,success: { followersList in
             
             let followersArray = followersList.users!
-            
+            print(followersArray)
             for currentUserDic in followersArray {
                 
                 self.followersListArray.append(FollowerModel(followerObject: currentUserDic))
@@ -82,7 +86,7 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
             }, failure: failureHandler)
         
     }
-    
+    // MARK TableView Delegate and DateSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.followersListArray.count
     }
@@ -102,6 +106,16 @@ class FollowersViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return cellHight
+    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let followerDetails:FollowerDetailsViewController = mainStoryboard.instantiateViewControllerWithIdentifier("FollowerDetailsViewController") as! FollowerDetailsViewController
+        
+        
+        
+        followerDetails.currentUser = self.followersListArray[indexPath.row]
+        self.navigationController?.pushViewController(followerDetails, animated: true)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
